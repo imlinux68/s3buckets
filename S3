@@ -85,8 +85,7 @@ while :
 			2) downloads3file ;;
 			3) deletes3file ;;
 			4) lists3bucket ;;
-
-			) break ;;
+			5) break ;;
 			*) echo "nums from 1 to 5 ONLY" ; sleep 3 ;;
 		esac
 	done
