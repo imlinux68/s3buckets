@@ -155,14 +155,22 @@ while :
 		read -p "take your choice: " choice
 		case $choice in
  
-			1) uploads3file ;;
-			2) downloads3file ;;
-			3) deletes3file ;;
-			4) lists3bucket ;;
-			5) creates3bucket ;;
-			6) listAllBuckets ;;
-			7) s3tos3 ;;
-			8) s3deleteBucket ;;
+			1) uploads3file ; 
+					read -rp "Press enter to continue" ;;
+			2) downloads3file ; 
+					read -rp "Press enter to continue" ;;
+			3) deletes3file ; 
+					read -rp "Press enter to continue" ;;
+			4) lists3bucket ; 
+					read -rp "Press enter to continue" ;;
+			5) creates3bucket ; 
+					read -rp "Press enter to continue" ;;
+			6) listAllBuckets ; 
+					read -rp "Press enter to continue" ;;
+			7) s3tos3 ; 
+					read -rp "Press enter to continue" ;;
+			8) s3deleteBucket ; 
+					read -rp "Press enter to continue" ;;
 			9) break ;;
 			*) echo "nums from 1 to 9 ONLY" ; sleep 3 ;;
 		esac
