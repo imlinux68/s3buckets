@@ -1,4 +1,20 @@
 #!/bin/bash
+############ COLOR SECTION #############
+
+# Reset
+Off='\033[0m'       # Text Reset
+
+# Regular Colors
+Greenl='\033[1;32m'        # Green Light
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[1;36m'         # Cyan
+White='\033[1;97m'        # White BOLD
+
+########## END OF COLOR SECTION #########
 
 function creates3bucket(){
 read -p "Enter a desired s3 bucket name: " bucketName
@@ -64,13 +80,13 @@ while :
 		echo          "***************************"
 		echo          "***************************"
 
-			 echo "1. Upload a file "
-			 echo "2. Download file"
-			 echo "3. Delete a file"
-			 echo "4. List all files"
-			 echo "5. Create S3 BUCKET"
-			 echo "6. list all existing buckets"
-			 echo "7. Quit"
+			 echo -e "1. ${Yellow}Upload a file${Off}"
+			 echo -e "2. ${Green}Download file${Off}"
+			 echo -e "3. ${Red}Delete a file${Off}"
+			 echo -e "4. ${Cyan}List all files${Off}"
+			 echo -e "5. ${Blue}Create S3 BUCKET${Off}"
+			 echo -e "6. ${Purple}List all existing buckets${Off}"
+			 echo -e "7. ${White}Quit${Off}"
 
 
 		read -p "take your choice: " choice
