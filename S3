@@ -95,7 +95,33 @@ for file in "${files[@]}"
 	done
 }
 
-
+function s3deleteBucket() {
+echo "Note! The deleting of the bucket can't be undone!!"
+read -p "Are you ready to loss all your data in specific bucket? y/n " lossData
+	if [[ $lossData = "y" ]]
+		then
+			read -p "Enter a name of a bucket to check if it empty to delete it: " bucketName
+			echo "These are files in your bucket: "
+			echo "---------------------------------------------------------------------------------"
+			aws s3 ls s3://$bucketName
+			echo "---------------------------------------------------------------------------------"
+			read -p "Are you sure you wanna to empty your bucket? y/n " emptyB
+				if [[ $emptyB = "y" ]]
+					then
+						echo "Removing all files!"
+						sleep 3
+						aws s3 rm s3://$bucketName --recursive
+						read -p "Well done, all data is cleaned\nAre you sure you wanna to delete your bucket $bucketName finally y/n? " s3buckketdelFin
+						if [[ $s3buckketdelFin = "y" ]]
+							then
+								echo "Removing your bucket $bucketName"
+								sleep 3
+								aws s3 rb s3://$bucketName
+						fi
+				fi
+	fi
+echo "Your bucket $bucketName successfully deleted!"
+}
 
 ############ START MAIN SECTION ################
 
@@ -116,6 +142,7 @@ while :
 			 echo -e "6. ${Purple}List all existing buckets${Off}"
 			 echo -e "7. ${Greenl}Copy from bucket to bucket${Off}"
 			 echo -e "8. ${White}Quit${Off}"
+			 echo -e "9. ${}Delete bucket"
 
 
 		read -p "take your choice: " choice
