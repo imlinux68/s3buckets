@@ -8,12 +8,17 @@ if aws s3api head-bucket --bucket "$bucketName" 2>/dev/null
     else
 		echo "The bucket doesnt exists and will be created now!"
 		read -p "enter a region name in format (us-west-1): " regionName
-		aws s3api create-bucket --bucket "$bucketName" --region $regionName
+		aws s3api create-bucket --bucket "$bucketName" --create-bucket-configuration LocationConstraint=$regionName
 		echo "Bucket $bucketName was created! Use it!"
 fi
 }
 
-function uploads3file() {
+function listAllBuckets() {
+echo "These are youre buckets already exists!"
+aws s3 ls
+}
+
+fun1ction uploads3file() {
 read -p "Enter the local file name: " fileName
 read -p "Enter the S3 bucket name: " bucketName
 aws s3 cp $fileName s3://$bucketName/
@@ -64,7 +69,8 @@ while :
 			 echo "3. Delete a file"
 			 echo "4. List all files"
 			 echo "5. Create S3 BUCKET"
-			 echo "5. Quit"
+			 echo "6. list all existing buckets"
+			 echo "7. Quit"
 
 
 		read -p "take your choice: " choice
@@ -75,7 +81,8 @@ while :
 			3) deletes3file ;;
 			4) lists3bucket ;;
 			5) creates3bucket ;;
-			6) break ;;
+			6) listAllBuckets ;;
+			7) break ;;
 			*) echo "nums from 1 to 6 ONLY" ; sleep 3 ;;
 		esac
 	done
