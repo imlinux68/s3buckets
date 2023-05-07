@@ -1,0 +1,99 @@
+#!/bin/bash
+
+ 
+
+function uploads3file() {
+
+read -p "Enter the local file name: " fileName
+
+read -p "Enter the S3 bucket name: " bucketName
+
+ 
+
+aws s3 cp $fileName s3://$bucketName/
+
+}
+
+ 
+
+function downloads3file() {
+
+read -p "Enter the remote file name: " fileName
+
+read -p "Enter the S3 bucket name: " bucketName
+
+ 
+
+aws s3 cp s3://$bucketName/$fileName .
+
+}
+
+ 
+
+ 
+
+function deletes3file() {
+
+read -p "Enter the remote file name: " fileName
+
+read -p "Enter the S3 bucket name: " bucketName
+
+ 
+
+aws s3 rm s3://$bucketName/$fileName
+
+}
+
+ 
+
+function lists3bucket() {
+
+read -p "Enter the S3 bucket name: " bucketName
+
+ 
+
+aws s3 ls s3://$bucketName/
+
+}
+
+ 
+
+
+
+############ START MAIN SECTION ################
+
+function main() {
+while :
+	do
+		echo -e "\n\n\n***************************"
+		echo          "***************************"
+		echo          "MAKE YOUR CHOISE RIGHT NOW!"
+		echo          "***************************"
+		echo          "***************************"
+
+			 echo "1. Upload a file "
+			 echo "2. Download file"
+			 echo "3. Delete a file"
+			 echo "4. List all files"
+			 echo "5. Quit"
+
+
+		read -p "take your choice: " choice
+		case $choice in
+ 
+			1) uploads3file ;;
+			2) downloads3file ;;
+			3) deletes3file ;;
+			4) lists3bucket ;;
+
+			) break ;;
+			*) echo "nums from 1 to 5 ONLY" ; sleep 3 ;;
+		esac
+	done
+}
+
+
+
+
+main
+############ END MAIN SECTION ################
