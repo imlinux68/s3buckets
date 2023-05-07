@@ -5,13 +5,14 @@
 Off='\033[0m'       # Text Reset
 
 # Regular Colors
-Greenl='\033[1;32m'        # Green Light
+Greenl='\033[1;32m'       # Green Light
 Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
 Yellow='\033[0;33m'       # Yellow
 Blue='\033[0;34m'         # Blue
 Purple='\033[0;35m'       # Purple
 Cyan='\033[1;36m'         # Cyan
+REDBG='\033[0;41m'        # Red Background
 White='\033[1;97m'        # White BOLD
 
 ########## END OF COLOR SECTION #########
@@ -20,18 +21,20 @@ function creates3bucket(){
 read -p "Enter a desired s3 bucket name: " bucketName
 if aws s3api head-bucket --bucket "$bucketName" 2>/dev/null
 	then
-		echo "The bucket is already exists!!"
+		echo -e "${Red}The bucket is already exists!!${Off}"
     else
 		echo "The bucket doesnt exists and will be created now!"
 		read -p "enter a region name in format (us-west-1): " regionName
 		aws s3api create-bucket --bucket "$bucketName" --create-bucket-configuration LocationConstraint=$regionName
-		echo "Bucket $bucketName was created! Use it!"
+		echo -e "${Green}Bucket $bucketName was created! Use it!${Off}"
 fi
 }
 
 function listAllBuckets() {
 echo "These are youre buckets already exists!"
+echo "---------------------------------------------------------------------------------"
 aws s3 ls
+echo "---------------------------------------------------------------------------------"
 }
 
 function uploads3file() {
@@ -41,7 +44,7 @@ read -p "Enter the S3 bucket name: " bucketName
 for file in "${files[@]}" 
 	do
 		aws s3 cp "$file" "s3://$bucketName/"
-		echo "File $file uploaded successfully!"
+		echo -e "${Green}File $file uploaded successfully!${Off}"
 	done
 }
 
@@ -54,7 +57,7 @@ read -p "Enter the S3 bucket name: " bucketName
 for file in "${files[@]}" 
 	do
 		aws s3 cp  "s3://$bucketName/$file" .
-		echo "File $file downloaded successfully!"
+		echo -e "${Green}File $file downloaded successfully!${Off}"
 	done
 }
 
@@ -69,7 +72,7 @@ read -p "Enter the S3 bucket name: " bucketName
 for file  in "${files[@]}" 
 	do
 		aws s3 rm s3://$bucketName/$file
-		echo "File $file deleted successfully!"
+		echo  -e "${Green}File $file deleted successfully!${Off}"
 	done
 }
 
@@ -78,7 +81,10 @@ for file  in "${files[@]}"
 function lists3bucket() {
 echo "Let list all files in specific bucket!"
 read -p "Enter the S3 bucket name: " bucketName
+echo -e "${Green}These are fuiles in bucket $bucketName${Off}"
+echo "---------------------------------------------------------------------------------"
 aws s3 ls s3://$bucketName/
+echo "---------------------------------------------------------------------------------"
 }
 
 
@@ -96,7 +102,7 @@ for file in "${files[@]}"
 }
 
 function s3deleteBucket() {
-echo "Note! The deleting of the bucket can't be undone!!"
+echo "Note! The deleting of the bucket cant be undone!!"
 read -p "Are you ready to loss all your data in specific bucket? y/n " lossData
 	if [[ $lossData = "y" ]]
 		then
@@ -111,7 +117,8 @@ read -p "Are you ready to loss all your data in specific bucket? y/n " lossData
 						echo "Removing all files!"
 						sleep 3
 						aws s3 rm s3://$bucketName --recursive
-						read -p "Well done, all data is cleaned\nAre you sure you wanna to delete your bucket $bucketName finally y/n? " s3buckketdelFin
+						echo "Well done, all data is cleaned\n"
+						read -p "Are you sure you wanna to delete your bucket $bucketName finally y/n? " s3buckketdelFin
 						if [[ $s3buckketdelFin = "y" ]]
 							then
 								echo "Removing your bucket $bucketName"
@@ -120,7 +127,7 @@ read -p "Are you ready to loss all your data in specific bucket? y/n " lossData
 						fi
 				fi
 	fi
-echo "Your bucket $bucketName successfully deleted!"
+echo -e "${Green}Your bucket $bucketName successfully deleted!${Off}"
 }
 
 ############ START MAIN SECTION ################
@@ -141,8 +148,8 @@ while :
 			 echo -e "5. ${Blue}Create S3 BUCKET${Off}"
 			 echo -e "6. ${Purple}List all existing buckets${Off}"
 			 echo -e "7. ${Greenl}Copy from bucket to bucket${Off}"
-			 echo -e "8. ${White}Quit${Off}"
-			 echo -e "9. ${}Delete bucket"
+			 echo -e "8. ${REDBG}Delete bucket${Off}"
+			 echo -e "9. ${White}Quit${Off}"
 
 
 		read -p "take your choice: " choice
@@ -155,8 +162,9 @@ while :
 			5) creates3bucket ;;
 			6) listAllBuckets ;;
 			7) s3tos3 ;;
-			8) break ;;
-			*) echo "nums from 1 to 8 ONLY" ; sleep 3 ;;
+			8) s3deleteBucket ;;
+			9) break ;;
+			*) echo "nums from 1 to 9 ONLY" ; sleep 3 ;;
 		esac
 	done
 }
