@@ -35,17 +35,27 @@ aws s3 ls
 }
 
 function uploads3file() {
-read -p "Enter the local file name: " fileName
+read -p "Enter the local file names separated by comma - ,: " fileNames
+IFS=',' read -ra files <<< "$fileNames"
 read -p "Enter the S3 bucket name: " bucketName
-aws s3 cp $fileName s3://$bucketName/
+for file in "${files[@]}" 
+	do
+		aws s3 cp "$file" "s3://$bucketName/"
+		echo "File $file uploaded successfully!"
+	done
 }
 
  
 
 function downloads3file() {
-read -p "Enter the remote file name: " fileName
+read -p "Enter the remote file name: " fileNames
+IFS=',' read -ra files <<< "$fileNames"
 read -p "Enter the S3 bucket name: " bucketName
-aws s3 cp s3://$bucketName/$fileName .
+for file in "${files[@]}" 
+	do
+		aws s3 cp  "s3://$bucketName/$file" .
+		echo "File $file downloaded successfully!"
+	done
 }
 
  
@@ -53,14 +63,20 @@ aws s3 cp s3://$bucketName/$fileName .
  
 
 function deletes3file() {
-read -p "Enter the remote file name: " fileName
+read -p "Enter the remote file names separated by comma - ,: " fileNames
+IFS=',' read -ra files <<< "fileNames"
 read -p "Enter the S3 bucket name: " bucketName
-aws s3 rm s3://$bucketName/$fileName
+for file  in "${files[@]}" 
+	do
+		aws s3 rm s3://$bucketName/$file
+		echo "File $file deleted successfully!"
+	done
 }
 
  
 
 function lists3bucket() {
+echo "Let list all files in specific bucket!"
 read -p "Enter the S3 bucket name: " bucketName
 aws s3 ls s3://$bucketName/
 }
