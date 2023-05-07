@@ -18,7 +18,7 @@ echo "These are youre buckets already exists!"
 aws s3 ls
 }
 
-fun1ction uploads3file() {
+function uploads3file() {
 read -p "Enter the local file name: " fileName
 read -p "Enter the S3 bucket name: " bucketName
 aws s3 cp $fileName s3://$bucketName/
