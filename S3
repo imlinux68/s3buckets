@@ -64,7 +64,7 @@ for file in "${files[@]}"
 
 function deletes3file() {
 read -p "Enter the remote file names separated by comma - ,: " fileNames
-IFS=',' read -ra files <<< "fileNames"
+IFS=',' read -ra files <<< "$fileNames"
 read -p "Enter the S3 bucket name: " bucketName
 for file  in "${files[@]}" 
 	do
@@ -81,7 +81,19 @@ read -p "Enter the S3 bucket name: " bucketName
 aws s3 ls s3://$bucketName/
 }
 
- 
+
+function s3tos3() {
+echo "Lets copy files from one s3 bucket to another s3 bucket"
+read -p "Enter the S3 bucket name you want copy from: " bucketNameFrom
+read -p "Enter the S3 bucket name you want copy to: " bucketNameTo
+read -p "Enter the file names separated by comma - ,: " fileNames
+IFS=',' read -ra files <<< "$fileNames"
+for file in "${files[@]}" 
+	do
+		aws s3 cp  "s3://$bucketNameFrom/$file" "s3://$bucketNameTo"
+		echo -e "File $file copied successfully! from bucket ${Green}$bucketNameFrom${Off} to bucket ${Red}$bucketNameTo${Off}"
+	done
+}
 
 
 
@@ -102,7 +114,8 @@ while :
 			 echo -e "4. ${Cyan}List all files${Off}"
 			 echo -e "5. ${Blue}Create S3 BUCKET${Off}"
 			 echo -e "6. ${Purple}List all existing buckets${Off}"
-			 echo -e "7. ${White}Quit${Off}"
+			 echo -e "7. ${Greenl}Copy from bucket to bucket${Off}"
+			 echo -e "8. ${White}Quit${Off}"
 
 
 		read -p "take your choice: " choice
@@ -114,8 +127,9 @@ while :
 			4) lists3bucket ;;
 			5) creates3bucket ;;
 			6) listAllBuckets ;;
-			7) break ;;
-			*) echo "nums from 1 to 6 ONLY" ; sleep 3 ;;
+			7) s3tos3 ;;
+			8) break ;;
+			*) echo "nums from 1 to 8 ONLY" ; sleep 3 ;;
 		esac
 	done
 }
